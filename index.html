@@ -8,9 +8,7 @@
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-(function(){
-    emailjs.init("hGNqg_mHom9axBqTW");
-})();
+(function(){ emailjs.init("hGNqg_mHom9axBqTW"); })();
 </script>
 
 <style>
@@ -42,25 +40,25 @@ h1{
     text-shadow:0 0 20px #fff,0 0 40px #ff66b2;
 }
 
-/* Square Pink Box */
-.buttons{
+/* Button Container Box */
+.buttonBox{
     margin-top:60px;
     position:relative;
-    width:520px;
-    height:250px;
+    width:420px;
+    height:150px;
     background: linear-gradient(145deg,#ff4da6,#ff99cc);
-    border-radius:0;
+    border-radius:20px;
     display:flex;
-    justify-content:center;
+    justify-content:space-around;
     align-items:center;
     box-shadow:0 0 60px #ff66b2;
 }
 
 /* Buttons */
 #yesBtn, #noBtn{
-    width:170px;
-    height:70px;
-    font-size:22px;
+    width:150px;
+    height:60px;
+    font-size:20px;
     border:none;
     border-radius:50px;
     cursor:pointer;
@@ -70,9 +68,6 @@ h1{
     background:linear-gradient(45deg,#ff1a75,#ff66b2);
     color:white;
     box-shadow:0 0 20px white;
-    position:absolute;
-    left:90px;
-    top:90px;
     animation: breathing 2s ease-in-out infinite;
     transition: transform 0.2s ease;
 }
@@ -80,9 +75,7 @@ h1{
 #noBtn{
     background:white;
     color:#ff1a75;
-    position:absolute;
-    left:90px;
-    top:90px;
+    transition: transform 0.2s ease;
 }
 
 /* Breathing animation */
@@ -119,48 +112,57 @@ h1{
     100%{transform:translateY(-10vh); opacity:0;}
 }
 
-/* Bouquet Scene */
-#bouquetScene{
-    position:fixed;
-    inset:0;
-    background: radial-gradient(circle,#ff4da6,#b30059);
+/* Envelope */
+#envelope{
+    width:200px;
+    height:120px;
+    background:#ff66b2;
+    border-radius:8px;
+    cursor:pointer;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 1.5s ease;
-    text-align:center;
-    padding:20px;
-}
-
-#bouquetScene.active{
-    opacity:1;
-    pointer-events:all;
-}
-
-/* Long Valentine message above comment box */
-#valentineMessageBox{
+    flex-direction:column;
+    box-shadow:0 0 20px #ff66b2;
+    position:relative;
+    transition: transform 0.5s;
     display:none;
-    margin-bottom:20px;
-    padding:15px;
-    width:350px;
-    background:#ff66b2;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 0 20px #fff;
+    margin-top:50px;
 }
-
-#valentineMessageBox p{
-    font-size:16px;
+#envelopeTop{
+    width:0; height:0;
+    border-left:100px solid transparent;
+    border-right:100px solid transparent;
+    border-bottom:50px solid #ff99cc;
+    position:absolute; top:-50px;
+}
+#envelopeText{
+    position:absolute;
     color:white;
     font-weight:bold;
+    font-size:16px;
+    z-index:2;
     text-shadow:0 0 10px #fff;
-    line-height:1.5;
 }
 
-textarea{
+/* Message Box */
+#messageBox{
+    display:none;
+    background:#ff66b2;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    margin-top:30px;
+    max-width:90%;
+    color:white;
+    box-shadow:0 0 20px #fff;
+}
+#messageBox p{
+    font-size:16px;
+    line-height:1.5;
+    font-weight:bold;
+}
+#loveInput{
     width:300px;
     height:80px;
     border-radius:15px;
@@ -168,8 +170,8 @@ textarea{
     padding:10px;
     resize:none;
     font-family:cursive;
+    margin-top:15px;
 }
-
 .submit-btn{
     margin-top:10px;
     padding:8px 20px;
@@ -180,8 +182,7 @@ textarea{
     cursor:pointer;
     font-weight:bold;
 }
-
-.love-message{
+#displayMessage{
     margin-top:15px;
     font-size:1.2em;
 }
@@ -190,91 +191,90 @@ textarea{
 
 <body>
 
-<h1>Will You Be My Valentine? 💖</h1>
+<h1>Will You Be My Valentine? 💖💐🌹💖</h1>
 
-<div class="buttons">
+<!-- Pink box containing YES and NO buttons -->
+<div class="buttonBox">
     <button id="yesBtn">YES 💕</button>
+    <button id="noBtn">NO 💔</button>
 </div>
 
-<button id="noBtn">NO 💔</button>
+<!-- Envelope -->
+<div id="envelope" onclick="openEnvelope()">
+    <div id="envelopeTop"></div>
+    <div id="envelopeText">Tap to Open 💌</div>
+</div>
 
-<div id="bouquetScene">
-    <div style="font-size:120px;">💐🌹💖</div>
-
-    <!-- Long Valentine Message Above Comment -->
-    <div id="valentineMessageBox">
-        <p id="valentineMessage">
-            💖 My Dearest Love,  
-            Today, I want to take a moment to tell you just how much you mean to me.  
-            You light up my days, make my heart smile, and fill my life with happiness in ways words cannot fully describe.  
-            Your laughter is my favorite sound, your smile my favorite sight, and your love my greatest treasure.  
-            I promise to cherish every moment with you, to support you through challenges, and celebrate every joy with you.  
-            Thank you for being the most amazing part of my life.  
-            I love you more than words can say, and I am so lucky to call you mine. 💖
-        </p>
-    </div>
-
-    <!-- User message input -->
+<!-- Message Box + Comment Box -->
+<div id="messageBox">
+    <p>
+        💖 My Dearest bebii,<br>
+        From the moment you came into my life, you’ve filled it with so much joy, laughter, and love. Every day with you is a blessing, and I am so grateful for every smile, hug, and memory we share.  
+Even though we sometimes argue and being apart in different locations is really hard, I want you to know that I miss you so much.  
+Every day, I think about you and all the moments we’ve shared, and I hope we can continue celebrating Valentine’s together for many more years despite our flaws and challenges.  
+You light up my days, make my heart smile, and fill my life with happiness in ways words cannot fully describe.  
+Your laughter is my favorite sound, your smile my favorite sight, and your love is my greatest treasure.  
+I promise to cherish every moment with you, support you through everything, and celebrate every joy together.
+Happy valentine's day bebii, I love you more than words can say, and also deay advance Happy birhtday beb!!🎉🎂 :>>. 💖
+    </p>
     <textarea id="loveInput" placeholder="Leave a sweet message... 💌"></textarea><br>
     <button class="submit-btn" onclick="submitMessage()">Send 💖</button>
-    <div class="love-message" id="displayMessage"></div>
+    <div id="displayMessage"></div>
 </div>
 
 <script>
-const noBtn=document.getElementById("noBtn");
-const yesBtn=document.getElementById("yesBtn");
-const bouquetScene=document.getElementById("bouquetScene");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const envelope = document.getElementById("envelope");
+const messageBox = document.getElementById("messageBox");
 
-/* NO button moves away */
+/* NO button moves away but stays fully visible */
 function moveNoFar(){
-    const maxX = window.innerWidth - noBtn.offsetWidth;
-    const maxY = window.innerHeight - noBtn.offsetHeight;
+    const padding = 10; // distance from edges
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
-}
+    noBtn.style.position = "absolute";
 
-/* Funny popup */
-function showTextPopup(){
-    const text=document.createElement("div");
+    const newX = Math.random() * maxX + padding;
+    const newY = Math.random() * maxY + padding;
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+
+    // popup text
+    const text = document.createElement("div");
     text.classList.add("popup-text");
-    text.innerHTML="😝 Bleh di ka dakop!";
-    text.style.left=(Math.random()*60+20)+"vw";
-    text.style.top=(Math.random()*60+20)+"vh";
+    text.innerHTML = "😝 Bleh di ka dakop!";
+    text.style.left = (Math.random() * 60 + 20) + "vw";
+    text.style.top = (Math.random() * 60 + 20) + "vh";
     document.body.appendChild(text);
-    setTimeout(()=>text.remove(),2000);
-}
-
-noBtn.addEventListener("mouseenter",function(){
-    moveNoFar();
-    showTextPopup();
+    setTimeout(() => text.remove(), 2000);
 
     // YES button grows
     const currentScale = parseFloat(yesBtn.dataset.scale || 1);
     const newScale = currentScale + 0.05;
     yesBtn.style.transform = `scale(${newScale})`;
     yesBtn.dataset.scale = newScale;
+}
+
+noBtn.addEventListener("mouseenter", moveNoFar);
+noBtn.addEventListener("touchstart", function(e){ e.preventDefault(); moveNoFar(); });
+
+/* YES button click -> show envelope */
+yesBtn.addEventListener("click", function(){
+    document.querySelector(".buttonBox").style.display="none"; // hide button box
+    envelope.style.display="flex";
 });
 
-noBtn.addEventListener("touchstart",function(e){
-    e.preventDefault();
-    moveNoFar();
-    showTextPopup();
-
-    const currentScale = parseFloat(yesBtn.dataset.scale || 1);
-    const newScale = currentScale + 0.05;
-    yesBtn.style.transform = `scale(${newScale})`;
-    yesBtn.dataset.scale = newScale;
-});
-
-/* YES button click */
-yesBtn.addEventListener("click",function(){
-    bouquetScene.classList.add("active");
-
-    // Show long Valentine message
-    const valentineBox = document.getElementById("valentineMessageBox");
-    valentineBox.style.display = "block";
-});
+/* Tap envelope to show message box */
+function openEnvelope(){
+    envelope.style.transform = "rotateX(180deg) scale(1.1)";
+    setTimeout(()=>{
+        envelope.style.display="none";
+        messageBox.style.display="block";
+    },600);
+}
 
 /* SEND MESSAGE */
 function submitMessage(){
@@ -290,9 +290,7 @@ function submitMessage(){
     sendBtn.disabled = true;
     sendBtn.innerHTML = "Sending... 💕";
 
-    emailjs.send("service_eyt534u","template_npv6opm",{
-        message: input
-    })
+    emailjs.send("service_eyt534u","template_npv6opm",{ message: input })
     .then(function(){
         display.innerHTML = "✅ Message Successfully Sent 💖";
         sendBtn.disabled = false;
@@ -317,7 +315,9 @@ function createHeart(){
     setTimeout(()=>heart.remove(),10000);
 }
 setInterval(createHeart,300);
+
 </script>
 
 </body>
 </html>
+
